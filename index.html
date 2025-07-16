@@ -814,7 +814,7 @@ if (form) {
         try {
             // Show loading state if needed
             const submitButton = form.querySelector('button[type="submit"]');
-            const originalButtonText = submitButton.textContent;
+            const originalButtonHTML = submitButton.innerHTML;
             submitButton.disabled = true;
             submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             
