@@ -805,18 +805,24 @@
             observer.observe(element);
         });
         
-       // Form submission handling
+      // Form submission handling
 const form = document.querySelector('form');
 if (form) {
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalButtonContent = submitButton.innerHTML;
+        
         try {
-            // Show loading state if needed
-            const submitButton = form.querySelector('button[type="submit"]');
-            const originalButtonHTML = submitButton.innerHTML;
+            // Show loading state
             submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitButton.innerHTML = `
+                <span class="flex items-center justify-center">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>
+                    Sending...
+                </span>
+            `;
             
             // Submit form data to Basin
             const response = await fetch(form.action, {
@@ -833,16 +839,18 @@ if (form) {
             }
         } catch (error) {
             showModal('Error', 'There was a problem sending your message. Please try again later.');
+            console.error('Form submission error:', error);
         } finally {
-            // Reset button state
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.innerHTML = originalButtonHTML;
-
-
-            }
+            // Always reset button state
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonContent;
         }
     });
+}
+
+// Modal function (unchanged)
+function showModal(title, message) {
+    // ... your existing modal code ...
 }
 
 // Modal function
